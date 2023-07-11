@@ -10,6 +10,21 @@
    <header>
         <h1>Cripto Wallet - {{ page }}</h1>
    </header> 
+   <div id="msg-error">
+    {% with msgs = get_flashed_messages() %}
+        {% if msgs %}
+            {% for msg in msgs%}
+                <p>{{msg}}</p>
+            {% endfor %}
+        {% endif  %}
+    {% endwith %}
+    </div>
+   <nav class="container">
+        <div {% if actual_page == "index" %} class="noactive" {% else%} class="navlink"{% endif %} id="navitem1"><a href="/">All transactions</a></div>
+        <div {% if actual_page =="new" %} class="noactive" {% else%} class="navlink"{% endif %} id="navitem2"><a href="/new_movement">New transaction</a></div>
+        <div id="navitem3"></div>
+        <div {% if actual_page =="status" %} class="noactive" {% else%} class="navlink"{% endif %} id="navitem4"><a href="/new_movement">Wallet Status</a></div>
+    </nav>
    <main class="container">
         {% block content %}{% endblock %}
    </main>

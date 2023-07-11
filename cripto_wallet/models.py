@@ -1,6 +1,5 @@
 import sqlite3
 
-
 class DAOSqlite:
     def __init__(self, data_path):
         self.path = data_path
@@ -33,7 +32,12 @@ class DAOSqlite:
         cur = conn.cursor()
         cur.execute(query)
         transactions_list = cur.fetchall()
-        return transactions_list
+        empty_list=None
+        if len(transactions_list) == 0:
+            empty_list="No existen movimientos"
+        return transactions_list,empty_list
+        
+         ## FALTARIA COMPROBAR QUE LOS DATOS DE LA BD SON CORRECTOS y en caso que no #raise ValueError
     
     
     def insert(self, data_as_tuple):
