@@ -12,10 +12,12 @@ Para consultar el tipo de cambio se utiliza una api: coinapi.io
 
 La aplicación registra todos los movimientos realizados (compras, intercambios y ventas) y calcula el resultado de la inversión
 
-##Instalacion del proyecto
+## Instalacion del proyecto
 
-###Librerías
+### Librerías
+
 Utiliza el .requirements.txt para ver las librerías instaladas
 
-###Variables de entornos
+### Variables de entornos
+
 Utiliza el .env_tempalte para crear el .env debidamente

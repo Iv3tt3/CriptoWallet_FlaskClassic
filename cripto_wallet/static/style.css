@@ -1,0 +1,15 @@
+header, footer{
+    background-color: rgb(35, 105, 92);
+}
+
+header h1{
+    color:white;
+    font-weight: bold;
+    text-align:center;
+}
+
+footer p{
+    color:white;
+    font-weight: bold;
+    text-align:center;
+}

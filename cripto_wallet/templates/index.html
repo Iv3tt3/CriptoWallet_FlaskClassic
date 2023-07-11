@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block content%}
+
+    <main>
+        <p>
+            <table>
+                <tr>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>FROM</th>
+                    <th>Amount (From)</th>
+                    <th>TO</th>
+                    <th>Amount (To)</th>
+                <tr>
+                    {% for transaction in transactions %}
+                </tr>
+                    <td>{{transaction[0]}}</td>
+                    <td>{{transaction[1]}}</td>
+                    <td>{{transaction[2]}}</td>
+                    <td>{{transaction[3]}}</td>
+                    <td>{{transaction[4]}}</td>
+                    <td>{{transaction[5]}}</td>
+                </tr>
+                    {% endfor %}
+            </table>
+        </p>
+    </main>
+
+{% endblock %}
