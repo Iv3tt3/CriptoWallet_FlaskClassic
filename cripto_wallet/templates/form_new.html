@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block content%}
+
+    <main>
+        <div class="grid-container">
+            <div class="grid-item" style="background-color: rgba(246, 246, 246, 0.743);border-radius: 10pt;">
+                <form action="/new_transaction" method="post">
+                    {{form.csrf_token}} 
+                    <p style="font-size: 20pt;font-weight: bold;text-align: center;">Calculator</p>
+                    <p style="font-weight: bold;text-align: center;">Enter the amount you want to invest <br> and select your options to get the currency rate</p>
+                    <div>
+                        {{form.amount.label}}
+                        <p class="descript"><em>{{form.amount.description}}</em></p>
+                        {% if form.amount.errors %} 
+                            {% for error in form.amount.errors %}
+                            <p style="color:red; margin: 0;">{{ error }}</p>
+                            {% endfor %}
+                        {% endif %}
+                        {{form.amount}}
+                    </div>
+                    <div>
+                        {{form.coinFrom.label}}
+                        {% if form.coinFrom.errors %} 
+                            {% for error in form.coinFrom.errors %}
+                            <p style="color:red; margin:0">{{ error }}</p>
+                            {% endfor %}
+                        {% endif %}
+                        <p class="descript"><em>{{form.coinFrom.description}}</em></p>
+                        {{form.coinFrom(placeholder='Seleccione una opción')}}
+                    </div>
+                    <div>
+                        {{form.coinTo.label}}
+                        {% if form.coinTo.errors %} 
+                        {% for error in form.coinTo.errors %}
+                        <p style="color:red; margin:0">{{ error }}</p>
+                        {% endfor %}
+                        {% endif %}
+                        <p class="descript"><em>{{form.coinTo.description}}</em></p>
+                        {{form.coinTo}}
+                    </div>
+                    <div>
+                        {{form.submit}}
+                    </div>
+                    <div>
+                        <p style="margin-bottom: 0;">Current rate:</p>
+                        <p id="result"> {{ rate }} </p>
+                        <p style="margin-bottom: 0;">Amount you will get:</p>
+                        <p id="result"> {{ amount_youGet }} {{form.coinTo.data}} </p>
+                    </div>
+                </form>
+            </div>
+            <div class="grid-item">
+                <p>Formulario 2</p>
+            </div>
+        </div>
+    </main>
+
+{% endblock %}

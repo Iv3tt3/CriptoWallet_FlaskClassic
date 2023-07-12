@@ -66,3 +66,31 @@ td {
     text-align: center;
     margin-top: 10pt;
 }
+
+
+.grid-container{
+    display: grid;
+    grid-template-columns: 50% 50%;
+}
+
+.grid-item {
+    margin: 20pt;
+    padding: 20pt;
+}
+
+#rateform{
+    background-color: light-grey;
+}
+
+.descript{
+    color:rgb(161, 161, 161);
+    font-size: 12pt;
+    margin-bottom: 0;
+}
+
+#result{
+    background-color: darkgray;
+    margin-top: 0;
+    padding: 10pt;
+    color: white;
+}

@@ -21,9 +21,9 @@
     </div>
    <nav class="container">
         <div {% if actual_page == "index" %} class="noactive" {% else%} class="navlink"{% endif %} id="navitem1"><a href="/">All transactions</a></div>
-        <div {% if actual_page =="new" %} class="noactive" {% else%} class="navlink"{% endif %} id="navitem2"><a href="/new_movement">New transaction</a></div>
+        <div {% if actual_page =="form_new" %} class="noactive" {% else%} class="navlink"{% endif %} id="navitem2"><a href="/new_transaction">New transaction</a></div>
         <div id="navitem3"></div>
-        <div {% if actual_page =="status" %} class="noactive" {% else%} class="navlink"{% endif %} id="navitem4"><a href="/new_movement">Wallet Status</a></div>
+        <div {% if actual_page =="status" %} class="noactive" {% else%} class="navlink"{% endif %} id="navitem4"><a href="/status">Wallet Status</a></div>
     </nav>
    <main class="container">
         {% block content %}{% endblock %}

@@ -1,4 +1,37 @@
 import sqlite3
+from cripto_wallet import app
+import requests
+
+apikey = '6FD88A14-4B8A-42A5-8884-EE08E9FDC460'
+#apikey = app.config.get('COIN_IO_API_KEY')
+
+def consult_to_apiio(form):
+    coinFrom = form.coinFrom.data
+    coinTo = form.coinTo.data
+    url = f"https://rest.coinapi.io/v1/exchangerate/{coinFrom}/{coinTo}?apikey={apikey}"
+    try: 
+        consult_response = requests.get(url)
+        data = consult_response.json() 
+        if consult_response.status_code == 200:
+            return True, data['rate'], consult_response.status_code, data['time']
+        else:
+            return False, data['error'], consult_response.status_code, consult_response.status_code      
+    
+    except requests.exceptions.RequestException as error_str:
+        return False, str(error_str), url, url
+            
+def calcul_amount_you_get(form, data):
+    amount = form.amount.data * data
+    #Instanciamos una clase
+    return amount
+
+
+
+
+
+
+
+
 
 class DAOSqlite:
     def __init__(self, data_path):
@@ -37,6 +70,9 @@ class DAOSqlite:
             empty_list="No existen movimientos"
         return transactions_list,empty_list
         
+        #Para probar el mensaje de error si esta corrupta la bd:
+        #raise ValueError 
+
          ## FALTARIA COMPROBAR QUE LOS DATOS DE LA BD SON CORRECTOS y en caso que no #raise ValueError
     
     
