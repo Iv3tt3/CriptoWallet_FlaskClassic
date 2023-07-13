@@ -39,20 +39,41 @@
                         <p class="descript"><em>{{form.coinTo.description}}</em></p>
                         {{form.coinTo}}
                     </div>
-                    <div>
-                        {{form.submit}}
+                    <div {% if form.order_button.data %} class="inactiveButton" {% else%} class="button"{% endif %}>
+                         {{form.submit_button}}
                     </div>
+            </div>
+
+            {% if form.submit_button.data %}
+            <div class="grid-item" style="background-color: rgba(246, 246, 246, 0.743);border-radius: 10pt;">
                     <div>
-                        <p style="margin-bottom: 0;">Current rate:</p>
-                        <p id="result"> {{ rate }} </p>
-                        <p style="margin-bottom: 0;">Amount you will get:</p>
-                        <p id="result"> {{ amount_youGet }} {{form.coinTo.data}} </p>
+                            <p style="font-size: 20pt;font-weight: bold;text-align: center;">Result</p>
+                            <p style="margin-bottom: 0;">Current rate:</p>
+                            <p id="result"> {{ calculs.rate }} </p>
+                            <p style="margin-bottom: 0;">Amount you will get:</p>
+                            <p id="result"> {{ calculs.amountTo }} {{form.coinTo.data}} </p>
+                            <div {% if form.order_button.data %} class="inactiveButton" {% else%} class="button"{% endif %}>{{form.order_button}}</div>
                     </div>
-                </form>
+                
+                    {% if form.order_button.data %}
+                    <div style="background-color: #23695c;padding-top: 20pt;border-radius: 10pt;margin-top: 10pt;">
+                        <p style="font-size: 20pt;font-weight: bold;text-align: center;color: white;">Ready to Purchase?</p>
+                        <div style="border: 5pt solid #23695c;border-radius: 10pt; background-color: white ;padding: 20pt;">
+                            <p style="font-weight: bold;text-align: center; background-color: rgba(246, 246, 246, 0.743);">Order resume:</p>
+                            <div style="padding-left: 20pt;text-align: left;">
+                                <p><b>From </b><em>(investing amount)</em>:
+                                <br><b>{{form.amount.data}} {{form.coinFrom.data}}</b></p>
+                                <p><b>To</b><em>(purchasing amount)</em>:
+                                <br><b>{{ calculs.amountTo}} {{form.coinTo.data}}</b></p>
+                            </div>
+                            {{form.purchase_button}}
+                            {{form.cancel_button}}
+                        </div>
+                    </div>
+                    {% endif %}
             </div>
-            <div class="grid-item">
-                <p>Formulario 2</p>
-            </div>
+            {% endif %}
+            </form>
         </div>
     </main>
 

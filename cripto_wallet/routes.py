@@ -1,46 +1,61 @@
 from cripto_wallet import app
-from flask import render_template, flash, request
-from cripto_wallet.models import DAOSqlite
+from flask import render_template, flash, request, redirect, url_for
+from cripto_wallet.models import dao, calculs
 from cripto_wallet.forms import SelectCoins
-from cripto_wallet.models import consult_to_apiio, calcul_amount_you_get
 
-dao = DAOSqlite(app.config.get("PATH_SQLITE"))
+#Instanciamos el dao en models.py para evitar import cruzados
+
 
 @app.route("/")
 def index():
     try:
-        transactions_list, empty_list = dao.select_all() 
+        transactions_list, empty_list = dao.display_transactions() 
         return render_template("index.html", page="Transactions", transactions=transactions_list, empty_list=empty_list, actual_page="index")
     except ValueError as e:
-        flash("Hay un problema en la base de datos")
+        flash("Problems with our data file")
         flash(str(e))
-        empty_list = "Consulte con su banco"
+        empty_list = "Contact with your bank"
         return render_template("index.html",page="Transactions", transactions=[], empty_list=empty_list, actual_page="index")
-    
+    except Exception as e:
+        flash(f"Fatal error {str(e)}")
+        return render_template("fatalerror.html",page="Fatal Error", actual_page="index")
+
 
 @app.route("/new_transaction", methods=["GET", "POST"])
 def new_transaction():
-    form = SelectCoins()
-    rate = "To calculate"
-    amount_youGet = "To calculate"
-    if request.method == 'GET':
-        return render_template("form_new.html",page="New transaction", form=form, actual_page="form_new", amount_youGet=amount_youGet)
-    else:
-        if form.validate():
-            try:
-                status, data, code, time = consult_to_apiio(form)
-                if status:
-                    amount_youGet = calcul_amount_you_get(form, data)
-                    return render_template("form_new.html",page="New transaction", form=form, actual_page="form_new", rate=data, amount_youGet=amount_youGet)
-                else:
-                    flash(f"Hay un problema en el servidor de consultas: {data}")
-                    return render_template("form_new.html",page="New transaction", form=form, actual_page="form_new", rate=data, amount_youGet=amount_youGet)
-            except ValueError as e:
-                flash("Hay un problema con el servidor de consultas:")
-                flash(str(e))
-                return render_template("form_new.html",page="New transaction", form=form, actual_page="form_new", rate=rate, amount_youGet=amount_youGet)
+    try:
+        form = SelectCoins()
+        if request.method == 'GET':
+            return render_template("form_new.html",page="New transaction", form=form, actual_page="form_new")
         else:
-            return render_template("form_new.html",page="New transaction", form=form, actual_page="form_new", rate=rate, amount_youGet=amount_youGet)
+            if form.validate():
+                if form.order_button.data:
+                    form.submit_button.data = True
+                    return render_template("form_new.html",page="New transaction", form=form, actual_page="form_new", calculs=calculs)
+                elif form.purchase_button.data:
+                    dao.insert_transaction(calculs)
+                    calculs.reset()
+                    return redirect(url_for("index"))
+                elif form.cancel_button.data:
+                    form.submit_button.data = True
+                    return render_template("form_new.html",page="New transaction", form=form, actual_page="form_new", calculs=calculs)
+                else:
+                    try:
+                        status, error_info = calculs.get_rate(form)
+                        if status:
+                            return render_template("form_new.html",page="New transaction", form=form, actual_page="form_new", calculs=calculs)
+                        else:
+                            flash(f"There is a problem with the query server, please try again later {error_info}")
+                            return render_template("form_new.html",page="New transaction", form=form, actual_page="form_new", calculs=calculs)
+                    except ValueError as e:
+                        flash(f"There is a problem with the query server:{str(e)}")
+                        return render_template("form_new.html",page="New transaction", form=form, actual_page="form_new", calculs=calculs)
+            else:
+                form.submit_button.data = False 
+                return render_template("form_new.html",page="New transaction", form=form, actual_page="form_new", calculs=calculs)
+    except Exception as e:
+        flash(f"Fatal error {str(e)}")
+        return render_template("fatalerror.html",page="Fatal Error", actual_page="form_new")
 
 @app.route("/status")
 def status():

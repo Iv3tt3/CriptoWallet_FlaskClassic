@@ -59,6 +59,16 @@ td {
     border-bottom: 1px solid black;
   }
 
+
+/* Estilos para hacer el boton inactivo */
+.inactiveButton {
+    --primary: rgb(189, 189, 189);
+    cursor: not-allowed;
+    pointer-events: none;
+    background-color: rgba(211, 211, 211, 0.287);
+  }
+
+
 #msg-error p{
     color:white;
     font-weight: bold;
@@ -89,8 +99,16 @@ td {
 }
 
 #result{
-    background-color: darkgray;
+    background-color: rgba(204, 226, 223, 0.6);
     margin-top: 0;
     padding: 10pt;
-    color: white;
+    font-weight: bold;
+}
+
+#cancel_button{
+    background-color: white;
+    width: fit-content;
+    text-decoration: underline;
+    color: rgb(53, 143, 233);
+    border: none;
 }
