@@ -9,7 +9,7 @@ from cripto_wallet.forms import SelectCoins
 @app.route("/")
 def index():
     try:
-        transactions_list, empty_list = dao.display_transactions() 
+        transactions_list, empty_list = dao.get_all_transactions() 
         return render_template("index.html", page="Transactions", transactions=transactions_list, empty_list=empty_list, actual_page="index")
     except ValueError as e:
         flash("Problems with our data file")
@@ -41,7 +41,7 @@ def new_transaction():
                     return render_template("form_new.html",page="New transaction", form=form, actual_page="form_new", calculs=calculs)
                 else:
                     try:
-                        status, error_info = calculs.get_rate(form)
+                        status, error_info = calculs.get_rate(form.coinFrom.data, form.coinTo.data, form.amount.data)
                         if status:
                             return render_template("form_new.html",page="New transaction", form=form, actual_page="form_new", calculs=calculs)
                         else:
@@ -59,4 +59,12 @@ def new_transaction():
 
 @app.route("/status")
 def status():
-    return render_template("status.html",page="Wallet status", actual_page="status")
+    cripto_list, total_value, euros_invested, euros_refund, investment_result, empty_list = dao.get_wallet_balance()
+    return render_template("status.html",page="Wallet status", 
+                           actual_page="status", 
+                           cripto_list=cripto_list, 
+                           total_value=total_value, 
+                           euros_invested=euros_invested, 
+                           euros_refund=euros_refund, 
+                           investment_result=investment_result,
+                           empty_list=empty_list)

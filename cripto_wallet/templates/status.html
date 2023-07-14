@@ -3,7 +3,32 @@
 {% block content%}
 
     <main>
-        
+        <p style="font-size: 20pt; font-weight: bold;text-align: center;">
+        Wallet Balance - Investment Status</p>
+
+        {% if empty_list == 'Your wallet is empty' %}
+            <p id="empty_list"> {{empty_list}} </p>
+
+        {% else %}
+            <table id="statustable">
+                <tr class="tabletitles">
+                    <th>Coin</th>
+                    <th>Total amount</th>
+                    <th>Current value <br> (in EUR)</th>
+                </tr>
+                {% for cripto in cripto_list %}
+                <tr>
+                    <td>{{cripto[0]}}</td>
+                    <td style="text-align: right;padding-right: 20pt;">{{cripto[1]}}</td>
+                    <td style="text-align: right;padding-right: 20pt;">{{cripto[2]}}</td>
+                </tr>
+                {% endfor %}
+            </table>
+            <p>Total Balance: {{total_value}} EUR</p>
+            <p>Invest Euros: {{euros_invested}} EUR</p>
+            <p>Refund Euros: {{euros_refund}} EUR</p>
+            <p>Investment Result: {{investment_result}} EUR</p>
+        {% endif %}
     </main>
 
 {% endblock %}

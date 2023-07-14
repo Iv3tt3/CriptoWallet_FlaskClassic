@@ -1,20 +1,7 @@
 from flask_wtf  import FlaskForm
 from wtforms import SelectField, FloatField, SubmitField
 from wtforms.validators import DataRequired, ValidationError
-from cripto_wallet.models import dao
-
-coins = [("option","Select an option"),
-         ("EUR","EUR"),
-         ("BTC","BTC"), 
-         ("BNB","BNB"),
-         ("ETH","ETH"),
-         ("USDT","USDT"),
-         ("XRP","XRP"),
-         ("ADA","ADA"),
-         ("SOL","SOL"),
-         ("DOT","DOT"),
-         ("MATIC","MATIC")]
-
+from cripto_wallet.models import dao, coins
 
 
 class SelectCoins(FlaskForm):
@@ -30,7 +17,7 @@ class SelectCoins(FlaskForm):
     def validate_amount(self,field):
         if field.data<=0:
             raise ValidationError("Must be positive number")
-        amount = dao.get_coin_in_wallet(self.coinFrom.data)
+        amount = dao.get_coin_amount(self.coinFrom.data)
         if self.coinFrom.data != "EUR" and field.data > amount:
             raise ValidationError(f"Not enough balance of {self.coinFrom.data} in your wallet. Your current balance is {amount} {self.coinFrom.data}")
         
